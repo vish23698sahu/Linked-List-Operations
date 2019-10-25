@@ -1,0 +1,235 @@
+/* Single linked list operations */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+  int data;
+  struct node *link;
+};
+struct node *root = NULL;
+int len;
+int item;
+
+void append (void);  
+void AddAtBegin (void);  
+void addAfter (void);
+int length (void);  
+void display (void);  
+void deleteitem (void);
+void reversedLinkedList (struct node *head);
+
+int main ()
+{
+  int ch;
+
+  while (1)
+    {
+      printf ("\n Single linked list operations: \n");
+      printf (" 1. Append \n");
+      printf (" 2. AddAtBegin \n");
+      printf (" 3. AddAfter \n");
+      printf (" 4. Length \n");
+      printf (" 5. Display \n");
+      printf (" 6. Delete \n");
+      printf (" 7. Display the reversed Linked List: \n");
+      printf (" 8. Quit \n");
+
+      printf ("Enter your choice: ");
+      scanf ("%d", &ch);
+
+      switch (ch)
+      {
+	    case 1:append ();
+	        break;
+
+	    case 2:AddAtBegin ();
+	        break;
+
+	    case 3:addAfter ();
+	        break;
+
+	    case 4:len = length ();
+	        printf ("length of the list is:%d \n", len);
+	        break;
+
+	    case 5:display ();
+	        break;
+
+	    case 6:deleteitem ();
+	        break;
+
+	    case 7:reversedLinkedList (root);
+	        printf("\n");
+	        break;
+
+	    case 8:exit (1);
+	        break;
+
+	    default:printf ("\n invalid input, please enter a valid input ");
+	    }
+
+    }
+  return 0;
+} //End of main function
+
+void append ()
+{
+
+  struct node *temp;
+  temp = (struct node *) malloc (sizeof (struct node));
+  printf ("Enter the node data: ");
+  scanf ("%d", &temp->data);
+  temp->link = NULL;
+
+  if (root == NULL)		//if List is empty
+    {
+      root = temp;
+      printf ("node added at the beginning \n");
+    }
+  else
+    {
+      struct node *p;
+      p = root;
+      while (p->link != NULL)
+	{
+	  p = p->link;
+	}
+      p->link = temp;
+      printf ("node added successfully \n");
+    }
+}
+
+int length ()
+{
+  int count = 0;
+  struct node *temp;
+  temp = root;
+
+  while (temp != NULL)
+    {
+      count++;
+      temp = temp->link;
+    }
+  return count;
+}
+
+void display ()
+{
+  struct node *temp;
+  temp = root;
+  if (temp == NULL)
+    {
+      printf ("the list is empty, nothing to display");
+    }
+
+  else
+    {
+      while (temp != NULL)
+	{
+	  printf ("%d--> ", temp->data);
+	  temp = temp->link;
+	}
+      printf ("\n");
+    }
+}
+
+void AddAtBegin ()
+{
+
+  struct node *temp;
+  temp = (struct node *) malloc (sizeof (struct node));
+  printf ("Enter the node data: ");
+  scanf ("%d", &temp->data);
+  temp->link = NULL;
+
+  if (root == NULL)
+    {
+      root = temp;
+    }
+  else
+    {
+      temp->link = root;
+      root = temp;
+    }
+}
+
+void addAfter ()
+{
+  struct node *temp, *p;
+  int loc, N, i = 1;
+  p = (struct node *) malloc (sizeof (struct node));
+  temp = (struct node *) malloc (sizeof (struct node));
+  printf ("Enter the node data: ");
+  scanf ("%d", &temp->data);
+  temp->link = NULL;
+
+  printf ("Enter the location: ");
+  scanf ("%d", &loc);
+
+  N = length ();
+  if (loc > N)
+    printf ("Sorry please enter a valid location \n");
+
+  else
+    {
+      p = root;
+      while (i < loc)
+	{
+	  p = p->link;
+	  i++;
+	}
+      temp->link = p->link;
+      p->link = temp;
+    }
+
+}
+
+void deleteitem (void)
+{
+  int position, size, i = 1;
+  printf ("Enter the position to delete the item: ");
+  scanf ("%d", &position);
+
+  size = length ();
+
+  if (position > size)
+    {
+      printf ("Please enter corect position\n");
+    }
+
+  else
+    {
+      struct node *p, *q;
+      p = (struct node *) malloc (sizeof (struct node));
+      p->link = NULL;
+
+      q = (struct node *) malloc (sizeof (struct node));
+      q->link = NULL;
+
+      p = root;
+      q = root;
+
+      while (i < position - 1)
+	{
+	  p = p->link;
+	  i++;
+	}
+      q = p->link;
+      p->link = q->link;
+      q->link = NULL;
+    }
+}
+
+void reversedLinkedList (struct node *head)
+{
+  if (head == NULL){
+      printf("The Linked List is empty\n");
+      return;
+  }
+
+  reversedLinkedList (head->link);
+
+  printf ("%d--> ", head->data);
+}
